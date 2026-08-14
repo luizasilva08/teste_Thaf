@@ -1,7 +1,7 @@
-from menu import Menu
+from menu import MenuPrincipal
 
 def main():
-    menu = Menu()
+    menu = MenuPrincipal()
     menu.exibir()
 
 if __name__ == "__main__":

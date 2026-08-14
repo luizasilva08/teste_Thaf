@@ -208,6 +208,13 @@ def validar_nome_perfil(nome):
 
 ## 5. `menu.py`
 
+O `menu.py` tem duas partes: o **`MenuPrincipal`** (azul, único — lista os
+módulos do sistema e chama o submenu de cada um) e um **submenu por classe**
+(cada um com sua própria cor — o de Perfil usa laranja/âmbar). Ao criar uma
+nova classe, você não mexe no `MenuPrincipal` além de adicionar uma linha de
+opção; cria sim uma nova classe `MenuNovaClasse` com uma paleta de cores
+diferente das já usadas.
+
 ```python
 from repositories.perfil_repository import PerfilRepository
 from models.perfil import Perfil
@@ -232,7 +239,39 @@ def gradiente_texto(texto, cor_inicio, cor_fim):
     return resultado
 
 
-class Menu:
+class MenuPrincipal:
+
+    # Azul institucional: azul-marinho -> azul de aço -> azul claro
+    AZUL_MARINHO = (10, 30, 60)
+    AZUL_ACO = (40, 90, 160)
+    AZUL_CLARO = (150, 195, 235)
+
+    def exibir(self):
+        while True:
+            print()
+            print(gradiente_texto("=" * 60, self.AZUL_MARINHO, self.AZUL_CLARO))
+            print(gradiente_texto("CTW MANUTENÇÃO - MENU PRINCIPAL", self.AZUL_ACO, self.AZUL_CLARO))
+            print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
+            print(gradiente_texto("1 - Perfis", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("0 - Sair", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
+
+            opcao = input(gradiente_texto("Escolha uma opção: ", self.AZUL_CLARO, self.AZUL_MARINHO))
+
+            if opcao == "1":
+                MenuPerfil().exibir()
+
+            elif opcao == "0":
+                print()
+                print(gradiente_texto("Sistema Encerrado", self.AZUL_MARINHO, self.AZUL_ACO))
+                break
+
+            else:
+                print()
+                print(gradiente_texto("Opção inválida!", self.AZUL_CLARO, self.AZUL_MARINHO))
+
+
+class MenuPerfil:
 
     # Laranja segurança: aço escuro -> laranja industrial -> âmbar claro
     ACO_ESCURO = (30, 34, 40)
@@ -277,7 +316,7 @@ class Menu:
             elif opcao == "0":
                 self.repository.fechar()
                 print()
-                print(gradiente_texto("Sistema Encerrado", self.ACO_ESCURO, self.LARANJA))
+                print(gradiente_texto("Voltando ao menu principal...", self.ACO_ESCURO, self.LARANJA))
                 break
 
             else:
@@ -476,10 +515,10 @@ class Menu:
 ## 6. `main.py`
 
 ```python
-from menu import Menu
+from menu import MenuPrincipal
 
 def main():
-    menu = Menu()
+    menu = MenuPrincipal()
     menu.exibir()
 
 if __name__ == "__main__":
@@ -589,7 +628,23 @@ Troque, em todos os blocos acima:
 - `id_perfil` → `id_<nova_classe>`
 - Os campos do `__init__`, do `INSERT`/`UPDATE` e das colunas do `SELECT *` conforme as colunas da nova tabela
 
-`database/conexao.py`, `database/criar_tabelas.py`, `main.py` e a assinatura
-da classe `Menu` (bloco de cores + `exibir()`) não mudam — só entram novas
-opções de menu (6, 7, 8...) e novos métodos `cadastrar_<classe>`,
-`buscar_<classe>`, etc., chamando o `Repository` da nova classe.
+`database/conexao.py`, `database/criar_tabelas.py` e `main.py` não mudam.
+
+No `menu.py`:
+- **`MenuPrincipal` é único e fica sempre azul.** Você só adiciona uma nova
+  linha de opção nele (ex: `2 - Usuarios`) chamando `MenuNovaClasse().exibir()`
+  — não crie um segundo menu principal nem mude a paleta azul dele.
+- **Cada classe ganha seu próprio submenu** (`MenuUsuario`, `MenuAtivo`...),
+  copiado da estrutura do `MenuPerfil` acima, mas **com uma paleta de cores
+  diferente das já usadas** (defina 3 tons próprios, tipo:
+  `AZUL_MARINHO/AZUL_ACO/AZUL_CLARO` do principal, `ACO_ESCURO/LARANJA/AMBAR`
+  do Perfil — para a próxima classe, escolha outra combinação, ex: verde,
+  roxo, vermelho...). Isso ajuda a distinguir visualmente em qual módulo do
+  sistema a pessoa está.
+
+Tabela de cores já usadas (para não repetir):
+
+| Classe | Menu | Cores |
+|---|---|---|
+| — | `MenuPrincipal` | Azul (marinho → aço → claro) |
+| Perfil | `MenuPerfil` | Laranja (aço escuro → laranja → âmbar) |
