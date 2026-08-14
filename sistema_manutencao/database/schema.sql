@@ -7,14 +7,12 @@
 -- 1. MÓDULO DE AUTENTICAÇÃO E RBAC (Controle de Acesso)
 -- ====================================================================
 
--- Níveis de acesso (RBAC), alinhados aos stakeholders do documento de
--- requisitos THAF (RN-002: colaboradores parametrizados por cargos e perfis).
 CREATE TABLE perfis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL UNIQUE,
     descricao TEXT,
     CONSTRAINT chk_perfil_nome CHECK (
-        nome IN ('ADMINISTRADOR', 'DIRETOR', 'GERENTE', 'TECNICO', 'AUXILIAR')
+        LOWER(nome) IN ('coordenador', 'gestor', 'professor', 'aluno', 'representante')
     )
 );
 
