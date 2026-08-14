@@ -6,7 +6,8 @@ class ItemAlmoxarifado:
                  quantidade_atual = 0,
                  estoque_minimo = 1,
                  unidade_medida = "UN",
-                 localizacao_gaveta = None):
+                 localizacao_gaveta = None,
+                 deleted_at = None):
 
         self.id_ferramenta = id_ferramenta
         self.nome_ferramenta = nome_ferramenta
@@ -15,6 +16,7 @@ class ItemAlmoxarifado:
         self.estoque_minimo = estoque_minimo
         self.unidade_medida = unidade_medida
         self.localizacao_gaveta = localizacao_gaveta
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;94m"

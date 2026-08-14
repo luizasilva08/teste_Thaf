@@ -5,7 +5,8 @@ class RegistroQuebra:
                  usuario_id = None,
                  descricao_quebra = "",
                  foto_url = None,
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_quebra = id_quebra
         self.item_id = item_id
@@ -13,6 +14,7 @@ class RegistroQuebra:
         self.descricao_quebra = descricao_quebra
         self.foto_url = foto_url
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;240m"

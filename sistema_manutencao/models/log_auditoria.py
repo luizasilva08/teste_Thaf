@@ -4,13 +4,15 @@ class LogAuditoria:
                  usuario_id = None,
                  acao = "",
                  endereco_ip = None,
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_log = id_log
         self.usuario_id = usuario_id
         self.acao = acao
         self.endereco_ip = endereco_ip
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;236m"

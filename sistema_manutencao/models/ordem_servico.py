@@ -15,7 +15,8 @@ class OrdemServico:
                  hora_inicio = None,
                  hora_fim = None,
                  quantidade_pessoas = 1,
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_os = id_os
         self.solicitacao_id = solicitacao_id
@@ -30,6 +31,7 @@ class OrdemServico:
         self.hora_fim = hora_fim
         self.quantidade_pessoas = quantidade_pessoas
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;94m"

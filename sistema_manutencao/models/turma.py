@@ -2,11 +2,13 @@
 class Turma:
     def __init__(self, id_turma = None,
                  codigo_turma = "",
-                 periodo_turma = ""):
+                 periodo_turma = "",
+                 deleted_at = None):
 
         self.id_turma = id_turma
         self.codigo_turma = codigo_turma
         self.periodo_turma = periodo_turma
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;22m"

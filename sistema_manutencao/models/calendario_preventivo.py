@@ -21,7 +21,8 @@ class CalendarioPreventivo:
                  frequencia_calendario = "Mensal",
                  data_proxima_execucao = None,
                  status = "Agendada",
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_calendario = id_calendario
         self.maquina_id = maquina_id
@@ -33,6 +34,7 @@ class CalendarioPreventivo:
         self.data_proxima_execucao = data_proxima_execucao
         self.status = status
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;90m"

@@ -26,7 +26,8 @@ class SolicitacaoServico:
                  tipo_manutencao = "Corretiva",
                  status = "Aberta",
                  criado_em = None,
-                 atualizado_em = None):
+                 atualizado_em = None,
+                 deleted_at = None):
 
         self.id_ss = id_ss
         self.maquina_id = maquina_id
@@ -39,6 +40,7 @@ class SolicitacaoServico:
         self.status = status
         self.criado_em = criado_em
         self.atualizado_em = atualizado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;18m"

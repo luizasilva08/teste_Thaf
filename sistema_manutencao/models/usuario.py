@@ -6,7 +6,8 @@ class Usuario:
                  nome_usuario = "",
                  email_usuario = "",
                  senha_hash = "",
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_usuario = id_usuario
         self.perfil_id = perfil_id
@@ -15,6 +16,7 @@ class Usuario:
         self.email_usuario = email_usuario
         self.senha_hash = senha_hash
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;53m"

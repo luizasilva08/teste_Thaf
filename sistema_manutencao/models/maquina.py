@@ -7,7 +7,8 @@ class Maquina:
                  tag_maquina = "",
                  nome_maquina = "",
                  status_vivo = "Operando",
-                 ultima_manutencao = None):
+                 ultima_manutencao = None,
+                 deleted_at = None):
 
         self.id_maquina = id_maquina
         self.setor_id = setor_id
@@ -15,6 +16,7 @@ class Maquina:
         self.nome_maquina = nome_maquina
         self.status_vivo = status_vivo
         self.ultima_manutencao = ultima_manutencao
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;24m"

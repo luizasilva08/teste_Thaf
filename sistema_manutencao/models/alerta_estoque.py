@@ -6,13 +6,15 @@ class AlertaEstoque:
                  item_id = None,
                  mensagem_alerta = "",
                  status = "Pendente",
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_alerta = id_alerta
         self.item_id = item_id
         self.mensagem_alerta = mensagem_alerta
         self.status = status
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;52m"

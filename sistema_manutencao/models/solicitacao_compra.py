@@ -16,7 +16,8 @@ class SolicitacaoCompra:
                  equipamento = None,
                  conjunto_mecanico = None,
                  arquivos = None,
-                 criado_em = None):
+                 criado_em = None,
+                 deleted_at = None):
 
         self.id_solicitacao = id_solicitacao
         self.solicitante_id = solicitante_id
@@ -33,6 +34,7 @@ class SolicitacaoCompra:
         self.conjunto_mecanico = conjunto_mecanico
         self.arquivos = arquivos
         self.criado_em = criado_em
+        self.deleted_at = deleted_at  # só é preenchido pelo módulo soft_delete/
 
     def __str__(self):
         c1  = "\033[38;5;22m"
