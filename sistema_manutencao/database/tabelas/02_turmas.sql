@@ -1,0 +1,5 @@
+CREATE TABLE turmas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
+    periodo VARCHAR(20) NOT NULL
+);

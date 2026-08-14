@@ -1,25 +1,32 @@
-# Sistema de Gerenciamento de Manutenção (CTW)
+# Sistema de Gerenciamento de Manutenção (THAF)
 
-Backend em Python (arquitetura em camadas: `models` / `repositories` / `database` / `utils`) para o setor de manutenção, cobrindo: autenticação/RBAC, mapa da oficina e máquinas, almoxarifado/ferramentaria, registro de quebra, Solicitação de Serviço (SS) e Ordem de Serviço (OS), solicitação de compras e calendário preventivo.
+Backend em Python (arquitetura em camadas: `models` / `repositories` / `database` / `utils`) para o setor de manutenção, rodando sobre MySQL hospedado na Aiven.
 
-Ver `../BACKLOG.md` na raiz do repositório para o backlog completo por módulo/bancada.
+Ver `../BACKLOG.md` na raiz do repositório para o backlog completo por módulo/bancada e `../NOTION_TEMPLATE_CLASSE.md` para o passo a passo de como criar uma nova classe.
 
 ## Estrutura
 
 ```
 sistema_manutencao/
 ├── database/
-│   ├── conexao.py       # pool de conexão MySQL (lê .env)
-│   ├── criar_tabelas.py # cria o banco e as tabelas a partir do schema.sql
-│   └── schema.sql       # DDL completo (13 tabelas)
-├── models/               # dataclasses das entidades
-├── repositories/         # CRUD + regras de acesso a dados por entidade
+│   ├── conexao.py         # classe Conexao (mysql-connector, lê .env, suporta SSL da Aiven)
+│   ├── criar_tabelas.py   # roda todos os .sql de tabelas/ na ordem certa
+│   └── tabelas/            # um arquivo .sql por tabela (numerado p/ respeitar as FKs)
+├── models/                 # uma classe simples por entidade (__init__ + __str__)
+├── repositories/           # uma classe por entidade: salvar/buscar_por_id/listar/atualizar/excluir
 ├── utils/
-│   └── validacoes.py     # validações, hash de senha, checagem de perfil
-├── menu.py                # menu CLI com login + CRUD por módulo
-├── main.py                # ponto de entrada
+│   ├── validacoes_gerais.py   # validações genéricas compartilhadas
+│   └── <classe>_validacoes.py # validações específicas de cada classe
+├── menu.py                 # MenuPrincipal (azul) + um submenu colorido por classe
+├── main.py                 # ponto de entrada
 └── requirements.txt
 ```
+
+**Por que um arquivo por tabela/classe/validação?** Com várias pessoas
+trabalhando ao mesmo tempo, cada uma mexe só nos arquivos da sua própria
+classe — evita conflito de merge. Os únicos pontos compartilhados são
+`menu.py` (adicionar uma opção no `MenuPrincipal`) e, ocasionalmente,
+`utils/validacoes_gerais.py`. Detalhes em `../NOTION_TEMPLATE_CLASSE.md`.
 
 ## Setup
 
@@ -27,17 +34,14 @@ sistema_manutencao/
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # preencher credenciais do MySQL
-python database/criar_tabelas.py   # cria o banco ctw_manutencao
+cp .env.example .env   # preencher credenciais da Aiven (inclui DB_SSL_CA)
+python database/criar_tabelas.py   # cria as tabelas em database/tabelas/
 python main.py
 ```
-
-## Primeiro acesso
-
-O banco não vem com usuário padrão. Cadastre manualmente o primeiro registro em `perfis` (ex: `coordenador`) e o primeiro `usuario` direto no banco (com senha já hasheada via `utils.validacoes.gerar_hash_senha`), ou crie um script `seed.py` conforme o item `[SETUP] Popular dados de seed` do backlog.
 
 ## Convenções
 
 - Toda query usa parâmetros (`%s`) — nunca concatenar strings SQL.
-- Senhas são armazenadas apenas com hash (`bcrypt`), nunca em texto puro.
-- Regras de negócio (ex.: transições de status da SS, geração de alerta de estoque, próxima ocorrência do calendário preventivo) ficam nos `repositories`, não no `menu.py`.
+- Repositories seguem sempre o mesmo padrão: `criar_<entidade>` (monta o objeto a partir da tupla do banco), `salvar`, `buscar_por_id`, `listar`, `atualizar`, `excluir`, `fechar`, com `try/except` fazendo `rollback` e print do erro.
+- Cada classe nova cria seu próprio arquivo em `models/`, `repositories/`, `utils/` e um novo `.sql` numerado em `database/tabelas/` — nunca edite o arquivo de outra classe.
+- Cada classe ganha um submenu próprio em `menu.py`, com uma paleta de cores (`gradiente_texto`) diferente das já usadas. O `MenuPrincipal` (azul) é único.

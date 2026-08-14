@@ -1,0 +1,12 @@
+-- Depende de: perfis, turmas
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    perfil_id INT NOT NULL,
+    turma_id INT DEFAULT NULL,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha_hash VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (perfil_id) REFERENCES perfis(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (turma_id) REFERENCES turmas(id) ON DELETE SET NULL ON UPDATE CASCADE
+);

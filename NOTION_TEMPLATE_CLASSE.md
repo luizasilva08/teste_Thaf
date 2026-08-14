@@ -15,7 +15,12 @@ git checkout -b "Feature/Issue-#1/Perfis"
 
 ---
 
-## 1. `database/schema.sql` (trecho da tabela)
+## 1. `database/tabelas/01_perfis.sql`
+
+Cada tabela é um arquivo próprio dentro de `database/tabelas/`, com um
+**prefixo numérico** que garante a ordem de criação (uma tabela com FK
+precisa nascer depois da tabela que ela referencia). Perfis é `01_` porque
+nada depende dela; a próxima classe pega o próximo número livre.
 
 ```sql
 CREATE TABLE perfis (
@@ -588,26 +593,37 @@ class Conexao:
 
 ```python
 # database/criar_tabelas.py
-"""Executa o database/schema.sql para criar as tabelas no MySQL (Aiven)."""
+"""Executa os scripts de database/tabelas/ para criar as tabelas no MySQL (Aiven).
 
+As tabelas ficam em um arquivo por classe (database/tabelas/<numero>_<tabela>.sql)
+para 13 pessoas trabalharem em paralelo sem conflitar no mesmo arquivo. O
+prefixo numérico garante a ordem de criação (respeitando as FOREIGN KEY).
+"""
+
+import glob
 import os
 
 from database.conexao import Conexao
 
-SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "schema.sql")
+TABELAS_DIR = os.path.join(os.path.dirname(__file__), "tabelas")
 
 
 def criar_tabelas():
     conexao = Conexao()
 
-    with open(SCHEMA_PATH, encoding="utf-8") as arquivo:
-        script = arquivo.read()
+    arquivos = sorted(glob.glob(os.path.join(TABELAS_DIR, "*.sql")))
 
     try:
-        for comando in script.split(";"):
-            comando = comando.strip()
-            if comando:
-                conexao.cursor.execute(comando)
+        for caminho in arquivos:
+            with open(caminho, encoding="utf-8") as arquivo:
+                script = arquivo.read()
+
+            for comando in script.split(";"):
+                comando = comando.strip()
+                if comando:
+                    conexao.cursor.execute(comando)
+
+            print(f"OK: {os.path.basename(caminho)}")
 
         conexao.commit()
         print(f"Tabelas criadas com sucesso no banco '{conexao.database}'.")
@@ -641,7 +657,14 @@ Troque, em todos os blocos acima:
 - `id_perfil` → `id_<nova_classe>`
 - Os campos do `__init__`, do `INSERT`/`UPDATE` e das colunas do `SELECT *` conforme as colunas da nova tabela
 
-`database/conexao.py`, `database/criar_tabelas.py` e `main.py` não mudam.
+**Tabela:** crie `database/tabelas/<N>_<sua_tabela>.sql` — **nunca edite o
+`.sql` de outra classe.** Pegue o próximo número livre (ex: se o maior já
+existente é `13_calendario_preventivo.sql`, o seu é `14_...`); se sua tabela
+tem FK pra uma tabela que ainda não existe, escolha um número maior que o
+dela. `criar_tabelas.py` executa os arquivos nessa ordem automaticamente —
+não precisa editá-lo.
+
+`database/conexao.py` e `main.py` não mudam.
 
 No `menu.py`:
 - **`MenuPrincipal` é único e fica sempre azul.** Você só adiciona uma nova
