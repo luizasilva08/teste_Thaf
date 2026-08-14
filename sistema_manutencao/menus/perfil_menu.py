@@ -1,5 +1,6 @@
 from models.perfil import Perfil
 from repositories.perfil_repository import PerfilRepository
+from soft_delete.perfil_soft_delete import PerfilSoftDelete
 from utils.perfil_validacoes import validar_nome_perfil
 
 from menus.gradiente import gradiente_texto
@@ -14,6 +15,7 @@ class MenuPerfil:
 
     def __init__(self):
         self.repository = PerfilRepository()
+        self.soft_delete = PerfilSoftDelete()
 
     # submenu
     def exibir(self):
@@ -27,6 +29,8 @@ class MenuPerfil:
             print(gradiente_texto("3 - Listar Perfis", self.LARANJA, self.AMBAR))
             print(gradiente_texto("4 - Atualizar Perfil", self.LARANJA, self.AMBAR))
             print(gradiente_texto("5 - Excluir Perfil", self.ACO_ESCURO, self.AMBAR))
+            print(gradiente_texto("6 - Ver Perfis Excluídos", self.ACO_ESCURO, self.AMBAR))
+            print(gradiente_texto("7 - Restaurar Perfil Excluído", self.ACO_ESCURO, self.AMBAR))
             print(gradiente_texto("0 - Sair", self.ACO_ESCURO, self.LARANJA))
             print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
 
@@ -47,8 +51,15 @@ class MenuPerfil:
             elif opcao == "5":
                 self.excluir_perfil()
 
+            elif opcao == "6":
+                self.listar_perfis_excluidos()
+
+            elif opcao == "7":
+                self.restaurar_perfil()
+
             elif opcao == "0":
                 self.repository.fechar()
+                self.soft_delete.fechar()
                 print()
                 print(gradiente_texto("Voltando ao menu principal...", self.ACO_ESCURO, self.LARANJA))
                 break
@@ -242,5 +253,82 @@ class MenuPerfil:
             return
 
         self.repository.excluir(id_perfil)
+        print()
+        input("Pressione ENTER para continuar...")
+
+    def listar_perfis_excluidos(self):
+        print()
+        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
+        print(gradiente_texto("PERFIS EXCLUÍDOS", self.LARANJA, self.AMBAR))
+        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        perfis = self.soft_delete.listar_excluidos()
+
+        if not perfis:
+            print()
+            print("Nenhum perfil excluído.")
+            print()
+            input("Pressione ENTER para continuar...")
+            return
+
+        print(
+            gradiente_texto(
+                f"{'ID':<5}{'Nome':<20}{'Excluído em':<25}",
+                self.ACO_ESCURO, self.AMBAR
+            )
+        )
+        print(gradiente_texto("-" * 60, self.AMBAR, self.ACO_ESCURO))
+
+        for perfil in perfis:
+            print(
+                gradiente_texto(
+                    f"{perfil.id_perfil:<5}{perfil.nome_perfil:<20}{str(perfil.deleted_at):<25}",
+                    self.LARANJA, self.AMBAR
+                )
+            )
+
+        print()
+        print(gradiente_texto(f"Total de perfis excluídos: {len(perfis)}", self.LARANJA, self.AMBAR))
+        print()
+        input("Pressione ENTER para continuar...")
+
+    def restaurar_perfil(self):
+        print()
+        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
+        print(gradiente_texto("RESTAURAR PERFIL EXCLUÍDO", self.LARANJA, self.AMBAR))
+        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+
+        try:
+            id_perfil = int(
+                input(gradiente_texto("Código do perfil excluído: ", self.ACO_ESCURO, self.LARANJA))
+            )
+
+        except ValueError:
+            print()
+            print("Código inválido.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        perfil = self.soft_delete.buscar_excluido_por_id(id_perfil)
+
+        if perfil is None:
+            print()
+            print("Perfil excluído não encontrado.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        print()
+        print(gradiente_texto(f"Perfil localizado: {perfil.nome_perfil}", self.LARANJA, self.AMBAR))
+
+        resposta = input(
+            gradiente_texto("Deseja restaurar este perfil? (S/N): ", self.AMBAR, self.ACO_ESCURO)
+        ).strip().upper()
+
+        if resposta != "S":
+            print()
+            print("Operação cancelada.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        self.soft_delete.restaurar(id_perfil)
         print()
         input("Pressione ENTER para continuar...")
