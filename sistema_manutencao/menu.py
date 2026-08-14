@@ -1,6 +1,6 @@
 from repositories.perfil_repository import PerfilRepository
 from models.perfil import Perfil
-from utils.validacoes import validar_nome_perfil, validar_campo_obrigatorio
+from utils.perfil_validacoes import validar_nome_perfil
 
 def gradiente_texto(texto, cor_inicio, cor_fim):
     """Aplica um gradiente de cor a uma linha de texto usando ANSI truecolor."""

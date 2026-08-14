@@ -185,15 +185,28 @@ class PerfilRepository:
         self.db.fechar()
 ```
 
-## 4. `utils/validacoes.py`
+## 4. `utils/` — validações
+
+Pra 13 pessoas não esbarrarem no mesmo arquivo, as validações são separadas
+em **um arquivo por classe** + um arquivo **genérico compartilhado**. Quando
+for criar a próxima classe, **não edite `perfil_validacoes.py`** — crie
+`utils/<sua_classe>_validacoes.py` do zero, seguindo este modelo.
+
+**`utils/validacoes_gerais.py`** (compartilhado — só mexa aqui se for criar
+uma validação realmente genérica, nova, adicionada no final do arquivo):
 
 ```python
-from models.perfil import PERFIS_VALIDOS
-
 def validar_campo_obrigatorio(valor, nome_campo):
     if valor is None or not str(valor).strip():
         raise ValueError(f"O campo '{nome_campo}' é obrigatório.")
     return valor.strip()
+```
+
+**`utils/perfil_validacoes.py`** (específico da classe Perfil):
+
+```python
+from models.perfil import PERFIS_VALIDOS
+from utils.validacoes_gerais import validar_campo_obrigatorio
 
 def validar_nome_perfil(nome):
     validar_campo_obrigatorio(nome, "nome")
@@ -218,7 +231,7 @@ diferente das já usadas.
 ```python
 from repositories.perfil_repository import PerfilRepository
 from models.perfil import Perfil
-from utils.validacoes import validar_nome_perfil, validar_campo_obrigatorio
+from utils.perfil_validacoes import validar_nome_perfil
 
 def gradiente_texto(texto, cor_inicio, cor_fim):
     """Aplica um gradiente de cor a uma linha de texto usando ANSI truecolor."""
@@ -648,3 +661,7 @@ Tabela de cores já usadas (para não repetir):
 |---|---|---|
 | — | `MenuPrincipal` | Azul (marinho → aço → claro) |
 | Perfil | `MenuPerfil` | Laranja (aço escuro → laranja → âmbar) |
+
+No `utils/`: crie `utils/<sua_classe>_validacoes.py` (nunca edite o arquivo
+de outra classe) e importe `validar_campo_obrigatorio` de
+`utils/validacoes_gerais.py` quando precisar de uma validação genérica.

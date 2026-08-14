@@ -1,9 +1,5 @@
 from models.perfil import PERFIS_VALIDOS
-
-def validar_campo_obrigatorio(valor, nome_campo):
-    if valor is None or not str(valor).strip():
-        raise ValueError(f"O campo '{nome_campo}' é obrigatório.")
-    return valor.strip()
+from utils.validacoes_gerais import validar_campo_obrigatorio
 
 def validar_nome_perfil(nome):
     validar_campo_obrigatorio(nome, "nome")
