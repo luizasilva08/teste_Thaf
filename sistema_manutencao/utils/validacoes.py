@@ -7,7 +7,7 @@ def validar_campo_obrigatorio(valor, nome_campo):
 
 def validar_nome_perfil(nome):
     validar_campo_obrigatorio(nome, "nome")
-    nome_normalizado = nome.strip().lower()
+    nome_normalizado = nome.strip().upper()
 
     if nome_normalizado not in PERFIS_VALIDOS:
         raise ValueError(

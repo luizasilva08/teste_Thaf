@@ -81,7 +81,7 @@ class Menu:
 
         try:
             nome = validar_nome_perfil(
-                input(gradiente_texto("Nome (coordenador/gestor/professor/aluno/representante): ", self.ACO_ESCURO, self.LARANJA))
+                input(gradiente_texto("Nome (ADMINISTRADOR/DIRETOR/GERENTE/TECNICO/AUXILIAR): ", self.ACO_ESCURO, self.LARANJA))
             )
             descricao = input(gradiente_texto("Descrição: ", self.LARANJA, self.AMBAR))
 

@@ -1,4 +1,7 @@
-PERFIS_VALIDOS = ("coordenador", "gestor", "professor", "aluno", "representante")
+# Níveis de acesso (RBAC) do THAF, conforme os papéis descritos no documento
+# de requisitos (RN-002). ADMINISTRADOR cobre o "usuário com privilégio
+# administrativo" citado nos requisitos não funcionais.
+PERFIS_VALIDOS = ("ADMINISTRADOR", "DIRETOR", "GERENTE", "TECNICO", "AUXILIAR")
 
 #class perfil
 class Perfil:
