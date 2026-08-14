@@ -703,6 +703,7 @@ Tabela de cores já usadas (para não repetir):
 | Perfil | `MenuPerfil` | Laranja (aço escuro → laranja → âmbar) |
 | Turma | `MenuTurma` | Verde (escuro → verde → claro) |
 | Usuario | `MenuUsuario` | Roxo (escuro → roxo → lilás claro) |
+| LogAuditoria | `MenuLogAuditoria` | Vermelho (escuro → vermelho → rosa claro) |
 
 No `utils/`: crie `utils/<sua_classe>_validacoes.py` (nunca edite o arquivo
 de outra classe) e importe `validar_campo_obrigatorio` de
