@@ -17,16 +17,20 @@ sistema_manutencao/
 ├── utils/
 │   ├── validacoes_gerais.py   # validações genéricas compartilhadas
 │   └── <classe>_validacoes.py # validações específicas de cada classe
-├── menu.py                 # MenuPrincipal (azul) + um submenu colorido por classe
+├── menus/
+│   ├── gradiente.py         # gradiente_texto() compartilhado
+│   ├── menu_principal.py    # MenuPrincipal (azul, único) — lista os módulos
+│   └── <classe>_menu.py     # submenu completo de cada classe, cor própria
 ├── main.py                 # ponto de entrada
 └── requirements.txt
 ```
 
-**Por que um arquivo por tabela/classe/validação?** Com várias pessoas
+**Por que um arquivo por tabela/classe/validação/menu?** Com várias pessoas
 trabalhando ao mesmo tempo, cada uma mexe só nos arquivos da sua própria
 classe — evita conflito de merge. Os únicos pontos compartilhados são
-`menu.py` (adicionar uma opção no `MenuPrincipal`) e, ocasionalmente,
-`utils/validacoes_gerais.py`. Detalhes em `../NOTION_TEMPLATE_CLASSE.md`.
+`menus/menu_principal.py` (2 linhas por classe: import + opção) e,
+ocasionalmente, `utils/validacoes_gerais.py`. Detalhes em
+`../NOTION_TEMPLATE_CLASSE.md`.
 
 ## Setup
 
@@ -43,5 +47,5 @@ python main.py
 
 - Toda query usa parâmetros (`%s`) — nunca concatenar strings SQL.
 - Repositories seguem sempre o mesmo padrão: `criar_<entidade>` (monta o objeto a partir da tupla do banco), `salvar`, `buscar_por_id`, `listar`, `atualizar`, `excluir`, `fechar`, com `try/except` fazendo `rollback` e print do erro.
-- Cada classe nova cria seu próprio arquivo em `models/`, `repositories/`, `utils/` e um novo `.sql` numerado em `database/tabelas/` — nunca edite o arquivo de outra classe.
-- Cada classe ganha um submenu próprio em `menu.py`, com uma paleta de cores (`gradiente_texto`) diferente das já usadas. O `MenuPrincipal` (azul) é único.
+- Cada classe nova cria seu próprio arquivo em `models/`, `repositories/`, `utils/`, `menus/` e um novo `.sql` numerado em `database/tabelas/` — nunca edite o arquivo de outra classe.
+- Cada classe ganha um submenu próprio (`menus/<classe>_menu.py`) com uma paleta de cores (`gradiente_texto`) diferente das já usadas. O `MenuPrincipal` (azul) é único; só recebe 2 linhas novas por classe (import + opção).

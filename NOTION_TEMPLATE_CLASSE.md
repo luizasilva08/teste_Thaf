@@ -224,20 +224,17 @@ def validar_nome_perfil(nome):
     return nome_normalizado
 ```
 
-## 5. `menu.py`
+## 5. `menus/` — menu principal + um submenu por classe
 
-O `menu.py` tem duas partes: o **`MenuPrincipal`** (azul, único — lista os
-módulos do sistema e chama o submenu de cada um) e um **submenu por classe**
-(cada um com sua própria cor — o de Perfil usa laranja/âmbar). Ao criar uma
-nova classe, você não mexe no `MenuPrincipal` além de adicionar uma linha de
-opção; cria sim uma nova classe `MenuNovaClasse` com uma paleta de cores
-diferente das já usadas.
+Pra 13 pessoas não conflitarem no menu, ele virou uma pasta: um arquivo
+compartilhado com o texto em gradiente, um `menu_principal.py` pequeno (só
+lista os módulos) e **um arquivo por classe** com o submenu completo. Ao
+criar uma nova classe, você cria `menus/<sua_classe>_menu.py` do zero e só
+adiciona **2 linhas** em `menus/menu_principal.py` (import + opção).
+
+**`menus/gradiente.py`** (compartilhado, praticamente nunca muda):
 
 ```python
-from repositories.perfil_repository import PerfilRepository
-from models.perfil import Perfil
-from utils.perfil_validacoes import validar_nome_perfil
-
 def gradiente_texto(texto, cor_inicio, cor_fim):
     """Aplica um gradiente de cor a uma linha de texto usando ANSI truecolor."""
     r1, g1, b1 = cor_inicio
@@ -255,6 +252,14 @@ def gradiente_texto(texto, cor_inicio, cor_fim):
         resultado += f"\033[38;2;{r};{g};{b}m{char}"
     resultado += "\033[0m"
     return resultado
+```
+
+**`menus/menu_principal.py`** (o único arquivo compartilhado de verdade — a
+lista de imports e a lista de opções crescem, mas o resto não muda):
+
+```python
+from menus.gradiente import gradiente_texto
+from menus.perfil_menu import MenuPerfil
 
 
 class MenuPrincipal:
@@ -287,6 +292,16 @@ class MenuPrincipal:
             else:
                 print()
                 print(gradiente_texto("Opção inválida!", self.AZUL_CLARO, self.AZUL_MARINHO))
+```
+
+**`menus/perfil_menu.py`** (exemplo completo — submenu de uma classe):
+
+```python
+from models.perfil import Perfil
+from repositories.perfil_repository import PerfilRepository
+from utils.perfil_validacoes import validar_nome_perfil
+
+from menus.gradiente import gradiente_texto
 
 
 class MenuPerfil:
@@ -533,7 +548,7 @@ class MenuPerfil:
 ## 6. `main.py`
 
 ```python
-from menu import MenuPrincipal
+from menus.menu_principal import MenuPrincipal
 
 def main():
     menu = MenuPrincipal()
@@ -666,17 +681,19 @@ não precisa editá-lo.
 
 `database/conexao.py` e `main.py` não mudam.
 
-No `menu.py`:
-- **`MenuPrincipal` é único e fica sempre azul.** Você só adiciona uma nova
-  linha de opção nele (ex: `2 - Usuarios`) chamando `MenuNovaClasse().exibir()`
-  — não crie um segundo menu principal nem mude a paleta azul dele.
-- **Cada classe ganha seu próprio submenu** (`MenuUsuario`, `MenuAtivo`...),
-  copiado da estrutura do `MenuPerfil` acima, mas **com uma paleta de cores
-  diferente das já usadas** (defina 3 tons próprios, tipo:
-  `AZUL_MARINHO/AZUL_ACO/AZUL_CLARO` do principal, `ACO_ESCURO/LARANJA/AMBAR`
-  do Perfil — para a próxima classe, escolha outra combinação, ex: verde,
+Na pasta `menus/`:
+- **Crie `menus/<sua_classe>_menu.py`** copiando a estrutura de
+  `menus/perfil_menu.py` — **nunca edite o arquivo de outra classe.**
+- **Só toque em `menus/menu_principal.py` pra adicionar 2 linhas**: o
+  `import` da sua classe no topo e a opção nova (`elif opcao == "2":
+  MenuNovaClasse().exibir()`) — sem mexer nas linhas de quem já está lá.
+  `MenuPrincipal` é único e fica sempre azul, não crie um segundo.
+- Dê ao seu submenu **uma paleta de cores diferente das já usadas** (defina
+  3 tons próprios, tipo: `AZUL_MARINHO/AZUL_ACO/AZUL_CLARO` do principal,
+  `ACO_ESCURO/LARANJA/AMBAR` do Perfil — escolha outra combinação, ex: verde,
   roxo, vermelho...). Isso ajuda a distinguir visualmente em qual módulo do
   sistema a pessoa está.
+- `menus/gradiente.py` também não muda — só importe `gradiente_texto` dele.
 
 Tabela de cores já usadas (para não repetir):
 
