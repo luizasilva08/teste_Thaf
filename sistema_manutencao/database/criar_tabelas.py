@@ -1,33 +1,33 @@
-"""Executa o schema.sql para criar o banco ctw_manutencao e suas tabelas."""
+"""Executa o database/schema.sql para criar as tabelas no MySQL (Aiven)."""
 
 import os
 
-import mysql.connector
-
-from database.conexao import _config
+from database.conexao import Conexao
 
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "schema.sql")
 
 
 def criar_tabelas():
-    config = _config()
-    database = config.pop("database")
-
-    conn = mysql.connector.connect(**config)
-    cursor = conn.cursor()
+    conexao = Conexao()
 
     with open(SCHEMA_PATH, encoding="utf-8") as arquivo:
         script = arquivo.read()
 
-    for comando in script.split(";"):
-        comando = comando.strip()
-        if comando:
-            cursor.execute(comando)
+    try:
+        for comando in script.split(";"):
+            comando = comando.strip()
+            if comando:
+                conexao.cursor.execute(comando)
 
-    conn.commit()
-    cursor.close()
-    conn.close()
-    print(f"Banco '{database}' e tabelas criados com sucesso.")
+        conexao.commit()
+        print(f"Tabelas criadas com sucesso no banco '{conexao.database}'.")
+
+    except Exception as erro:
+        conexao.rollback()
+        print(f"Erro ao criar tabelas: {erro}")
+
+    finally:
+        conexao.fechar()
 
 
 if __name__ == "__main__":

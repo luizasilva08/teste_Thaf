@@ -1,11 +1,24 @@
-from dataclasses import dataclass
-from typing import Optional
-
 PERFIS_VALIDOS = ("coordenador", "gestor", "professor", "aluno", "representante")
 
-
-@dataclass
+#class perfil
 class Perfil:
-    nome: str
-    descricao: Optional[str] = None
-    id: Optional[int] = None
+    def __init__(self, id_perfil = None,
+                 nome = "",
+                 descricao = ""):
+
+        self.id_perfil = id_perfil
+        self.nome = nome
+        self.descricao = descricao
+
+    def __str__(self):
+        c1  = "\033[38;5;17m"
+        c2  = "\033[38;5;18m"
+        c3  = "\033[38;5;19m"
+        reset = "\033[0m"
+
+        return (
+            f"{c1}=== DADOS PERFIL ==={reset}\n"
+            f"{c2}Nome:{reset} {self.nome}\n"
+            f"{c3}Descrição:{reset} {self.descricao}\n"
+            f"{c1}=========================={reset}"
+        )

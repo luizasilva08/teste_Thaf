@@ -1,30 +1,39 @@
 import os
-
 import mysql.connector
-from mysql.connector import pooling
+from dotenv import load_dotenv
 
-_POOL = None
+load_dotenv() #carrega automaticamente as variaveis existentes no .env
 
+class Conexao:
+    def __init__(self):
+        self.host = os.getenv("DB_HOST")
+        self.port = os.getenv("DB_PORT", "3306")
+        self.database = os.getenv("DB_NAME")
+        self.user = os.getenv("DB_USER")
+        self.password = os.getenv("DB_PASSWORD")
+        self.ssl_ca = os.getenv("DB_SSL_CA")  # caminho do certificado da Aiven (ca.pem)
 
-def _config():
-    return {
-        "host": os.getenv("DB_HOST", "localhost"),
-        "port": int(os.getenv("DB_PORT", "3306")),
-        "user": os.getenv("DB_USER", "root"),
-        "password": os.getenv("DB_PASSWORD", ""),
-        "database": os.getenv("DB_NAME", "ctw_manutencao"),
-    }
+        argumentos_conexao = {
+            "host": self.host,
+            "port": int(self.port),
+            "database": self.database,
+            "user": self.user,
+            "password": self.password,
+        }
 
+        # Aiven exige conexão criptografada. Se o caminho do certificado
+        # estiver configurado no .env, a conexão usa SSL.
+        if self.ssl_ca:
+            argumentos_conexao["ssl_ca"] = self.ssl_ca
+            argumentos_conexao["ssl_verify_cert"] = True
 
-def _pool():
-    global _POOL
-    if _POOL is None:
-        _POOL = pooling.MySQLConnectionPool(
-            pool_name="ctw_pool", pool_size=5, **_config()
-        )
-    return _POOL
+        self.conexao = mysql.connector.connect(**argumentos_conexao)
+        self.cursor = self.conexao.cursor()
 
-
-def obter_conexao():
-    """Retorna uma conexão do pool. Chamador é responsável por fechar (with)."""
-    return _pool().get_connection()
+    def commit(self):
+        self.conexao.commit()
+    def rollback(self):
+        self.conexao.rollback()
+    def fechar(self):
+        self.cursor.close()
+        self.conexao.close()

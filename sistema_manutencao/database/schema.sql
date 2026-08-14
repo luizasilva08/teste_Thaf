@@ -1,5 +1,7 @@
-CREATE DATABASE IF NOT EXISTS ctw_manutencao;
-USE ctw_manutencao;
+-- No Aiven o banco (ex: 'defaultdb') já vem provisionado e selecionado
+-- via DB_NAME no .env — não é necessário (nem geralmente permitido) rodar
+-- CREATE DATABASE/USE com o usuário padrão. Rode este script já conectado
+-- ao banco definido em DB_NAME (é o que database/criar_tabelas.py faz).
 
 -- ====================================================================
 -- 1. MÓDULO DE AUTENTICAÇÃO E RBAC (Controle de Acesso)
