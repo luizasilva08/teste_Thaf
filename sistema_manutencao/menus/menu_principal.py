@@ -1,6 +1,7 @@
 from menus.gradiente import gradiente_texto
 from menus.perfil_menu import MenuPerfil
 from menus.turma_menu import MenuTurma
+from menus.usuario_menu import MenuUsuario
 
 
 class MenuPrincipal:
@@ -18,6 +19,7 @@ class MenuPrincipal:
             print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
             print(gradiente_texto("1 - Perfis", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("2 - Turmas", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("3 - Usuários", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("0 - Sair", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
 
@@ -28,6 +30,9 @@ class MenuPrincipal:
 
             elif opcao == "2":
                 MenuTurma().exibir()
+
+            elif opcao == "3":
+                MenuUsuario().exibir()
 
             elif opcao == "0":
                 print()
