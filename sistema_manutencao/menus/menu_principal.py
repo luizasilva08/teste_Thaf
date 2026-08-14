@@ -1,7 +1,10 @@
 from menus.gradiente import gradiente_texto
-
-# Ao criar uma nova classe: importe o submenu dela aqui em cima e
-# adicione uma opção no bloco abaixo (nunca edite a linha de outra classe).
+from menus.perfil_menu import MenuPerfil
+from menus.turma_menu import MenuTurma
+from menus.usuario_menu import MenuUsuario
+from menus.log_auditoria_menu import MenuLogAuditoria
+from menus.setor_menu import MenuSetor
+from menus.maquina_menu import MenuMaquina
 
 
 class MenuPrincipal:
@@ -17,12 +20,36 @@ class MenuPrincipal:
             print(gradiente_texto("=" * 60, self.AZUL_MARINHO, self.AZUL_CLARO))
             print(gradiente_texto("CTW MANUTENÇÃO - MENU PRINCIPAL", self.AZUL_ACO, self.AZUL_CLARO))
             print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
+            print(gradiente_texto("1 - Perfis", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("2 - Turmas", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("3 - Usuários", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("4 - Logs de Auditoria", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("5 - Setores", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("6 - Máquinas", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("0 - Sair", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
 
             opcao = input(gradiente_texto("Escolha uma opção: ", self.AZUL_CLARO, self.AZUL_MARINHO))
 
-            if opcao == "0":
+            if opcao == "1":
+                MenuPerfil().exibir()
+
+            elif opcao == "2":
+                MenuTurma().exibir()
+
+            elif opcao == "3":
+                MenuUsuario().exibir()
+
+            elif opcao == "4":
+                MenuLogAuditoria().exibir()
+
+            elif opcao == "5":
+                MenuSetor().exibir()
+
+            elif opcao == "6":
+                MenuMaquina().exibir()
+
+            elif opcao == "0":
                 print()
                 print(gradiente_texto("Sistema Encerrado", self.AZUL_MARINHO, self.AZUL_ACO))
                 break

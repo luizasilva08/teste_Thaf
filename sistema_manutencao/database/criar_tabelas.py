@@ -1,8 +1,16 @@
-"""Executa os scripts de database/tabelas/ para criar as tabelas no MySQL (Aiven).
+"""Executa os scripts de database/tabelas/ para criar o schema no PostgreSQL (Aiven).
 
 As tabelas ficam em um arquivo por classe (database/tabelas/<numero>_<tabela>.sql)
 para 13 pessoas trabalharem em paralelo sem conflitar no mesmo arquivo. O
-prefixo numérico garante a ordem de criação (respeitando as FOREIGN KEY).
+prefixo numérico garante a ordem de execução: 00_ = tipos/funções
+compartilhadas (rodam antes de tudo), depois uma tabela por número,
+respeitando as FOREIGN KEY.
+
+Cada arquivo é enviado ao banco de uma vez só (sem dividir por ";" no
+Python) porque as funções em PL/pgSQL (00_funcoes.sql) têm ponto e vírgula
+dentro do corpo "$$ ... $$" — dividir a string quebraria essas funções.
+O PostgreSQL já sabe executar vários comandos separados por ";" em uma
+única chamada.
 """
 
 import glob
@@ -23,19 +31,15 @@ def criar_tabelas():
             with open(caminho, encoding="utf-8") as arquivo:
                 script = arquivo.read()
 
-            for comando in script.split(";"):
-                comando = comando.strip()
-                if comando:
-                    conexao.cursor.execute(comando)
-
+            conexao.cursor.execute(script)
             print(f"OK: {os.path.basename(caminho)}")
 
         conexao.commit()
-        print(f"Tabelas criadas com sucesso no banco '{conexao.database}'.")
+        print(f"Schema criado com sucesso no banco '{conexao.database}'.")
 
     except Exception as erro:
         conexao.rollback()
-        print(f"Erro ao criar tabelas: {erro}")
+        print(f"Erro ao criar schema: {erro}")
 
     finally:
         conexao.fechar()
