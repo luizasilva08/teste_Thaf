@@ -3,6 +3,7 @@ from menus.perfil_menu import MenuPerfil
 from menus.turma_menu import MenuTurma
 from menus.usuario_menu import MenuUsuario
 from menus.log_auditoria_menu import MenuLogAuditoria
+from menus.setor_menu import MenuSetor
 
 
 class MenuPrincipal:
@@ -22,6 +23,7 @@ class MenuPrincipal:
             print(gradiente_texto("2 - Turmas", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("3 - Usuários", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("4 - Logs de Auditoria", self.AZUL_MARINHO, self.AZUL_ACO))
+            print(gradiente_texto("5 - Setores", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("0 - Sair", self.AZUL_MARINHO, self.AZUL_ACO))
             print(gradiente_texto("=" * 60, self.AZUL_CLARO, self.AZUL_MARINHO))
 
@@ -38,6 +40,9 @@ class MenuPrincipal:
 
             elif opcao == "4":
                 MenuLogAuditoria().exibir()
+
+            elif opcao == "5":
+                MenuSetor().exibir()
 
             elif opcao == "0":
                 print()

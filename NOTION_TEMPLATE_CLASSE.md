@@ -704,6 +704,7 @@ Tabela de cores já usadas (para não repetir):
 | Turma | `MenuTurma` | Verde (escuro → verde → claro) |
 | Usuario | `MenuUsuario` | Roxo (escuro → roxo → lilás claro) |
 | LogAuditoria | `MenuLogAuditoria` | Vermelho (escuro → vermelho → rosa claro) |
+| Setor | `MenuSetor` | Amarelo (âmbar escuro → amarelo → amarelo claro) |
 
 No `utils/`: crie `utils/<sua_classe>_validacoes.py` (nunca edite o arquivo
 de outra classe) e importe `validar_campo_obrigatorio` de
