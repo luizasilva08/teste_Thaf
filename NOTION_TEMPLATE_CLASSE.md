@@ -701,6 +701,7 @@ Tabela de cores já usadas (para não repetir):
 |---|---|---|
 | — | `MenuPrincipal` | Azul (marinho → aço → claro) |
 | Perfil | `MenuPerfil` | Laranja (aço escuro → laranja → âmbar) |
+| Turma | `MenuTurma` | Verde (escuro → verde → claro) |
 
 No `utils/`: crie `utils/<sua_classe>_validacoes.py` (nunca edite o arquivo
 de outra classe) e importe `validar_campo_obrigatorio` de
