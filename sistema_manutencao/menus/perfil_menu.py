@@ -3,15 +3,8 @@ from repositories.perfil_repository import PerfilRepository
 from soft_delete.perfil_soft_delete import PerfilSoftDelete
 from utils.perfil_validacoes import validar_nome_perfil
 
-from menus.gradiente import gradiente_texto
-
 
 class MenuPerfil:
-
-    # Laranja segurança: aço escuro -> laranja industrial -> âmbar claro
-    ACO_ESCURO = (30, 34, 40)
-    LARANJA = (217, 98, 43)
-    AMBAR = (240, 180, 110)
 
     def __init__(self):
         self.repository = PerfilRepository()
@@ -21,20 +14,20 @@ class MenuPerfil:
     def exibir(self):
         while True:
             print()
-            print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-            print(gradiente_texto("CTW MANUTENÇÃO - PERFIS DE ACESSO", self.LARANJA, self.AMBAR))
-            print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
-            print(gradiente_texto("1 - Cadastrar Perfil", self.ACO_ESCURO, self.LARANJA))
-            print(gradiente_texto("2 - Buscar Perfil", self.ACO_ESCURO, self.LARANJA))
-            print(gradiente_texto("3 - Listar Perfis", self.LARANJA, self.AMBAR))
-            print(gradiente_texto("4 - Atualizar Perfil", self.LARANJA, self.AMBAR))
-            print(gradiente_texto("5 - Excluir Perfil", self.ACO_ESCURO, self.AMBAR))
-            print(gradiente_texto("6 - Ver Perfis Excluídos", self.ACO_ESCURO, self.AMBAR))
-            print(gradiente_texto("7 - Restaurar Perfil Excluído", self.ACO_ESCURO, self.AMBAR))
-            print(gradiente_texto("0 - Sair", self.ACO_ESCURO, self.LARANJA))
-            print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+            print("=" * 60)
+            print("CTW MANUTENÇÃO - PERFIS DE ACESSO")
+            print("=" * 60)
+            print("1 - Cadastrar Perfil")
+            print("2 - Buscar Perfil")
+            print("3 - Listar Perfis")
+            print("4 - Atualizar Perfil")
+            print("5 - Excluir Perfil")
+            print("6 - Ver Perfis Excluídos")
+            print("7 - Restaurar Perfil Excluído")
+            print("0 - Sair")
+            print("=" * 60)
 
-            opcao = input(gradiente_texto("Escolha uma opção: ", self.AMBAR, self.ACO_ESCURO))
+            opcao = input("Escolha uma opção: ")
 
             if opcao == "1":
                 self.cadastrar_perfil()
@@ -61,28 +54,28 @@ class MenuPerfil:
                 self.repository.fechar()
                 self.soft_delete.fechar()
                 print()
-                print(gradiente_texto("Voltando ao menu principal...", self.ACO_ESCURO, self.LARANJA))
+                print("Voltando ao menu principal...")
                 break
 
             else:
                 print()
-                print(gradiente_texto("Opção inválida!", self.AMBAR, self.ACO_ESCURO))
+                print("Opção inválida!")
 
     def cadastrar_perfil(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("CADASTRO DE PERFIL", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("CADASTRO DE PERFIL")
+        print("=" * 60)
 
         try:
             nome_perfil = validar_nome_perfil(
-                input(gradiente_texto("Nome (coordenador/gestor/professor/aluno): ", self.ACO_ESCURO, self.LARANJA))
+                input("Nome (coordenador/gestor/professor/aluno): ")
             )
-            descricao_perfil = input(gradiente_texto("Descrição: ", self.LARANJA, self.AMBAR))
+            descricao_perfil = input("Descrição: ")
 
         except ValueError as erro:
             print()
-            print(gradiente_texto(f"Erro: {erro}", self.AMBAR, self.ACO_ESCURO))
+            print(f"Erro: {erro}")
             input("\nPressione ENTER para continuar...")
             return
 
@@ -96,14 +89,12 @@ class MenuPerfil:
 
     def buscar_perfil(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("BUSCAR PERFIL", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("BUSCAR PERFIL")
+        print("=" * 60)
 
         try:
-            id_perfil = int(
-                input(gradiente_texto("Código do perfil: ", self.ACO_ESCURO, self.LARANJA))
-            )
+            id_perfil = int(input("Código do perfil: "))
 
         except ValueError:
             print()
@@ -118,18 +109,18 @@ class MenuPerfil:
             print("Perfil não encontrado.")
 
         else:
-            print(gradiente_texto(f"Código......: {perfil.id_perfil}", self.ACO_ESCURO, self.LARANJA))
-            print(gradiente_texto(f"Nome........: {perfil.nome_perfil}", self.LARANJA, self.AMBAR))
-            print(gradiente_texto(f"Descrição...: {perfil.descricao_perfil}", self.AMBAR, self.ACO_ESCURO))
+            print(f"Código......: {perfil.id_perfil}")
+            print(f"Nome........: {perfil.nome_perfil}")
+            print(f"Descrição...: {perfil.descricao_perfil}")
 
         print()
         input("Pressione ENTER para continuar...")
 
     def listar_perfil(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("LISTA DE PERFIS", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("LISTA DE PERFIS")
+        print("=" * 60)
         perfis = self.repository.listar()
 
         if not perfis:
@@ -139,37 +130,25 @@ class MenuPerfil:
             input("Pressione ENTER para continuar...")
             return
 
-        print(
-            gradiente_texto(
-                f"{'ID':<5}{'Nome':<20}{'Descrição':<35}",
-                self.ACO_ESCURO, self.AMBAR
-            )
-        )
-        print(gradiente_texto("-" * 60, self.AMBAR, self.ACO_ESCURO))
+        print(f"{'ID':<5}{'Nome':<20}{'Descrição':<35}")
+        print("-" * 60)
 
         for perfil in perfis:
-            print(
-                gradiente_texto(
-                    f"{perfil.id_perfil:<5}{perfil.nome_perfil:<20}{(perfil.descricao_perfil or ''):<35}",
-                    self.LARANJA, self.AMBAR
-                )
-            )
+            print(f"{perfil.id_perfil:<5}{perfil.nome_perfil:<20}{(perfil.descricao_perfil or ''):<35}")
 
         print()
-        print(gradiente_texto(f"Total de perfis: {len(perfis)}", self.LARANJA, self.AMBAR))
+        print(f"Total de perfis: {len(perfis)}")
         print()
         input("Pressione ENTER para continuar...")
 
     def atualizar_perfil(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("ATUALIZAÇÃO DE PERFIL", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("ATUALIZAÇÃO DE PERFIL")
+        print("=" * 60)
 
         try:
-            id_perfil = int(
-                input(gradiente_texto("Código do perfil: ", self.ACO_ESCURO, self.LARANJA))
-            )
+            id_perfil = int(input("Código do perfil: "))
 
         except ValueError:
             print()
@@ -186,23 +165,19 @@ class MenuPerfil:
             return
 
         print()
-        print(gradiente_texto("Pressione ENTER para manter o valor atual.", self.LARANJA, self.AMBAR))
+        print("Pressione ENTER para manter o valor atual.")
         print()
 
-        nome_perfil = input(
-            gradiente_texto(f"Nome [{perfil.nome_perfil}]: ", self.ACO_ESCURO, self.LARANJA)
-        )
+        nome_perfil = input(f"Nome [{perfil.nome_perfil}]: ")
         if nome_perfil:
             try:
                 perfil.nome_perfil = validar_nome_perfil(nome_perfil)
             except ValueError as erro:
-                print(gradiente_texto(f"Erro: {erro}", self.AMBAR, self.ACO_ESCURO))
+                print(f"Erro: {erro}")
                 input("\nPressione ENTER para continuar...")
                 return
 
-        descricao_perfil = input(
-            gradiente_texto(f"Descrição [{perfil.descricao_perfil}]: ", self.LARANJA, self.AMBAR)
-        )
+        descricao_perfil = input(f"Descrição [{perfil.descricao_perfil}]: ")
         if descricao_perfil:
             perfil.descricao_perfil = descricao_perfil
 
@@ -212,14 +187,12 @@ class MenuPerfil:
 
     def excluir_perfil(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("EXCLUSÃO DE PERFIL", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("EXCLUSÃO DE PERFIL")
+        print("=" * 60)
 
         try:
-            id_perfil = int(
-                input(gradiente_texto("Código do perfil: ", self.ACO_ESCURO, self.LARANJA))
-            )
+            id_perfil = int(input("Código do perfil: "))
 
         except ValueError:
             print()
@@ -236,15 +209,13 @@ class MenuPerfil:
             return
 
         print()
-        print(gradiente_texto("Perfil localizado", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("-" * 60, self.AMBAR, self.ACO_ESCURO))
-        print(gradiente_texto(f"Código.....: {perfil.id_perfil}", self.ACO_ESCURO, self.LARANJA))
-        print(gradiente_texto(f"Nome.......: {perfil.nome_perfil}", self.LARANJA, self.AMBAR))
+        print("Perfil localizado")
+        print("-" * 60)
+        print(f"Código.....: {perfil.id_perfil}")
+        print(f"Nome.......: {perfil.nome_perfil}")
         print()
 
-        resposta = input(
-            gradiente_texto("Deseja realmente excluir este perfil? (S/N): ", self.AMBAR, self.ACO_ESCURO)
-        ).strip().upper()
+        resposta = input("Deseja realmente excluir este perfil? (S/N): ").strip().upper()
 
         if resposta != "S":
             print()
@@ -258,9 +229,9 @@ class MenuPerfil:
 
     def listar_perfis_excluidos(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("PERFIS EXCLUÍDOS", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("PERFIS EXCLUÍDOS")
+        print("=" * 60)
         perfis = self.soft_delete.listar_excluidos()
 
         if not perfis:
@@ -270,37 +241,25 @@ class MenuPerfil:
             input("Pressione ENTER para continuar...")
             return
 
-        print(
-            gradiente_texto(
-                f"{'ID':<5}{'Nome':<20}{'Excluído em':<25}",
-                self.ACO_ESCURO, self.AMBAR
-            )
-        )
-        print(gradiente_texto("-" * 60, self.AMBAR, self.ACO_ESCURO))
+        print(f"{'ID':<5}{'Nome':<20}{'Excluído em':<25}")
+        print("-" * 60)
 
         for perfil in perfis:
-            print(
-                gradiente_texto(
-                    f"{perfil.id_perfil:<5}{perfil.nome_perfil:<20}{str(perfil.deleted_at):<25}",
-                    self.LARANJA, self.AMBAR
-                )
-            )
+            print(f"{perfil.id_perfil:<5}{perfil.nome_perfil:<20}{str(perfil.deleted_at):<25}")
 
         print()
-        print(gradiente_texto(f"Total de perfis excluídos: {len(perfis)}", self.LARANJA, self.AMBAR))
+        print(f"Total de perfis excluídos: {len(perfis)}")
         print()
         input("Pressione ENTER para continuar...")
 
     def restaurar_perfil(self):
         print()
-        print(gradiente_texto("=" * 60, self.ACO_ESCURO, self.AMBAR))
-        print(gradiente_texto("RESTAURAR PERFIL EXCLUÍDO", self.LARANJA, self.AMBAR))
-        print(gradiente_texto("=" * 60, self.AMBAR, self.ACO_ESCURO))
+        print("=" * 60)
+        print("RESTAURAR PERFIL EXCLUÍDO")
+        print("=" * 60)
 
         try:
-            id_perfil = int(
-                input(gradiente_texto("Código do perfil excluído: ", self.ACO_ESCURO, self.LARANJA))
-            )
+            id_perfil = int(input("Código do perfil excluído: "))
 
         except ValueError:
             print()
@@ -317,11 +276,9 @@ class MenuPerfil:
             return
 
         print()
-        print(gradiente_texto(f"Perfil localizado: {perfil.nome_perfil}", self.LARANJA, self.AMBAR))
+        print(f"Perfil localizado: {perfil.nome_perfil}")
 
-        resposta = input(
-            gradiente_texto("Deseja restaurar este perfil? (S/N): ", self.AMBAR, self.ACO_ESCURO)
-        ).strip().upper()
+        resposta = input("Deseja restaurar este perfil? (S/N): ").strip().upper()
 
         if resposta != "S":
             print()
